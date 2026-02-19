@@ -99,8 +99,8 @@ def erase_file(file_path: Path, progress_callback=None) -> bool:
         new_size = int(original_size * 0.9)
         with open(file_path, 'wb') as f:
             f.write(original_content[:new_size])
-        f.flush()
-        os.fsync(f.fileno()) if hasattr(f, 'fileno') else None
+            f.flush()
+            os.fsync(f.fileno())
         logger.info(f"Step 1 complete: Removed 10% from {file_path}")
 
         # Step 2: Replace remaining bytes with random letters
@@ -313,6 +313,10 @@ class FileEraserApp(QMainWindow):
 
     def start_erasing(self):
         """Start the erasing process."""
+        # Reload config from disk to pick up any manual edits
+        self.config = load_config()
+        self.update_config_editor()
+
         all_paths = self.config.get("files_to_erase", []) + self.config.get("folders_to_erase", [])
         if not all_paths:
             QMessageBox.warning(self, "No Files", "No files or folders configured for erasing.")

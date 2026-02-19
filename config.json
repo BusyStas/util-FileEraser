@@ -1,5 +1,8 @@
 {
-  "folders_to_erase": [],
+  "folders_to_erase": [
+      "D:\\AppleDrive\\iCloudDrive\\Art2"
+    , "D:\\AppleDrive\\iCloudDrive\\Art1"
+  ],
   "files_to_erase": []
 }
 
