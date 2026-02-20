@@ -65,12 +65,20 @@ def get_all_files(paths: List[str]) -> List[Path]:
     all_files = []
     for path_str in paths:
         path = Path(path_str)
+        logger.info(f"Processing path: {path_str}")
         if path.is_file():
+            logger.info(f"  -> Is a file, adding directly")
             all_files.append(path)
         elif path.is_dir():
+            logger.info(f"  -> Is a directory, scanning recursively...")
+            count_before = len(all_files)
             for file_path in path.rglob('*'):
                 if file_path.is_file():
                     all_files.append(file_path)
+            logger.info(f"  -> Found {len(all_files) - count_before} files in {path_str}")
+        else:
+            logger.warning(f"  -> Path does not exist or is not accessible: {path_str}")
+    logger.info(f"Total files to process: {len(all_files)}")
     return all_files
 
 
